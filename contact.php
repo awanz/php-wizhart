@@ -65,7 +65,7 @@
               <i class="fa fa-envelope"></i>
               <h4>Email</h4>
               <p><?= $include->email_text ?></p>
-              <a href="mailto:<?= $include->email ?>"><?= $include->email ?></a>
+              <a target="_BLANK" href="mailto:<?= $include->email ?>"><?= $include->email ?></a>
             </div>
           </div>
           <div class="col-md-4">

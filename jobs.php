@@ -60,7 +60,7 @@
               ?>
               <div class="col-md-6">
                 <div class="service-item">
-                  <img src="assets/images/product-1-720x480.jpg" alt="">
+                  <img src="assets/images/services/<?= $s['images'] ?>" alt="">
                   <div class="down-content">
                     <h4><?= $s['title'] ?></h4>
                     <div style="margin-bottom:10px;">

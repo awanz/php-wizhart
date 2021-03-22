@@ -11,8 +11,8 @@
     <div class="row">
         <div class="col-md-8 col-xs-12">
         <ul class="left-info">
-            <li><a href="#"><i class="fa fa-envelope"></i><?= $include->email ?></a></li>
-            <li><a href="#"><i class="fa fa-phone"></i><?= $include->phone ?></a></li>
+            <li><a target="_BLANK" href="mailto:<?= $include->email ?>"><i class="fa fa-envelope"></i><?= $include->email ?></a></li>
+            <li><a target="_BLANK" href="https://wa.me/<?= $include->phone ?>"><i class="fa fa-phone"></i><?= $include->phone ?></a></li>
         </ul>
         </div>
         <div class="col-md-4">
