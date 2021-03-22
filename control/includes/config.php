@@ -2,7 +2,7 @@
 
 // database
 $dbhost = "localhost";
-$dbname = "awan";
+$dbname = "wizhart";
 $dbuser = "root";
 $dbpass = "";
 $dbcharset = "utf8";

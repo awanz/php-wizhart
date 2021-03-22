@@ -39,7 +39,7 @@
     <div class="main-banner header-text" id="top">
         <div class="Modern-Slider">
           <!-- Item -->
-          <div class="item item-1">
+          <div class="item" style="background-image: url('assets/images/slider-image-1-1920x900.jpg');">
             <div class="img-fill">
                 <div class="text-content">
                   <h6></h6>
@@ -51,7 +51,7 @@
           </div>
           <!-- // Item -->
           <!-- Item -->
-          <div class="item item-2">
+          <div class="item" style="background-image: url('assets/images/slider-image-1-1920x900.jpg');">
             <div class="img-fill">
                 <div class="text-content">
                   <h6>We create inspiring visual image of content </h6>
@@ -63,7 +63,7 @@
           </div>
           <!-- // Item -->
           <!-- Item -->
-          <div class="item item-3">
+          <div class="item" style="background-image: url('assets/images/slider-image-1-1920x900.jpg');">
             <div class="img-fill">
                 <div class="text-content">
                   <h6></h6>

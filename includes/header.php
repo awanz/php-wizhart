@@ -22,8 +22,9 @@
 <header class="">
     <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <img src="assets/images/wizh2.png" alt="" style="width:150px;height:200px>
-        <a class="navbar-brand" href="index.php"></a>
+        <a href="index.php">
+            <img src="assets/images/wizh2.png" alt="" style="width:150px">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>

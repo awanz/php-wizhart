@@ -2,6 +2,7 @@
   session_start();
   $notif = null;
   include_once("includes/config.php");
+  include_once("includes/mysqlbase.php");
 
   if (!empty($_SESSION)) {
     if ($_SESSION['login'] == "masuk") {
@@ -10,9 +11,16 @@
     
   }else{
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+      $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
       $username = $_POST['username'];
       $password = $_POST['password'];
-      if ($username == "admin" && $password == "admin") {
+      $arrayWhere = array(
+                          "username" => $username, 
+                          "password" => md5($password)
+                        );
+      $resultData = $db->getByArray("users", $arrayWhere);
+            
+      if (mysqli_num_rows($resultData) > 0) {
         $_SESSION['login'] = "masuk";
         $_SESSION['username'] = $username;
         header("Location: dashboard.php");

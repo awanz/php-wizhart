@@ -1,4 +1,9 @@
 <?php
+    /**
+     * PHP Mysql Base Function (2021-03-22)
+     * Github: https://github.com/awanz/php-mysqli-base
+     * By: Awan
+     */
     class MySQLBase {
         
         protected $connection;
@@ -10,6 +15,16 @@
                 echo "Failed to connect to MySQL: (" . $this->connection->connect_errno . ") " . $this->connection->connect_error;
             }
             $this->hostinfo = $this->connection->host_info ;
+        }
+
+        function __destruct() {
+            $this->connection->close();
+        }
+
+        public function query($query) {
+            $result = $this->connection->query($query);
+            
+            return $result;
         }
 
         public function getAll($tableName) {
@@ -26,6 +41,21 @@
             return $result;
         }
         
+        public function getByArray($tableName, $arrayWhere) {
+            $where = null;
+            foreach ($arrayWhere as $key => $value) {
+                $where .= $key . " = '" . $value . "'";
+                $where .= " AND "; 
+            }
+
+            $where = substr($where, 0, -5);
+            
+            $query = "SELECT * FROM " . $tableName . " WHERE " . $where;
+            $result = $this->connection->query($query);
+            
+            return $result;
+        }
+        
         public function getLike($tableName, $keyWhere, $valueWhere) {
             $query = "SELECT * FROM " . $tableName . " WHERE " . $keyWhere . " LIKE " . $valueWhere;
             $result = $this->connection->query($query);
@@ -33,19 +63,24 @@
             return $result;
         }
 
-
         public function insert($tableName, $dataArray) {
+            /*
+                INSERT INTO table_name
+                (column1, column2, column3, ...)
+                VALUES
+                (values1, values2, values3, ...)
+            */
             $entry = null;
             foreach ($dataArray as $key => $value) {
                 if (is_numeric($value)) {
-                    $entry = $entry . $value . ', ';    
+                    $entry = $entry . $value . ', ';
                 } else {
                     if (preg_match("/\/[a-z]*>/i", $value ) != 0) {
                         $entry = $entry . '"' . addslashes($value) . '", ';  
                     } else {
                         $entry = $entry . '"' . $value . '", ';
                     }
-                }         
+                }
             }
 
             $entry = rtrim($entry, ", ");
@@ -76,9 +111,20 @@
         }
 
         public function delete($tableName, $keyWhere, $valueWhere) {
+            /*
+                DELETE FROM table_name
+                WHERE condition;
+            */
             $query = "DELETE FROM " . $tableName . " WHERE " . $keyWhere . " = " . $valueWhere;
-            $result = $this->connection->query($query);
+            $queryact = $this->connection->query($query);
 
+            if (!$this->connection->affected_rows) {
+                $result['status'] = 0;
+                $result['message'] = "Query failed: (" . $this->connection->errno . ") " . $this->connection->error;
+            }else{
+                $result['status'] = 1;
+                $result['message'] = "Delete successful!";
+            }
             return $result;
         }
 
@@ -103,11 +149,12 @@
             }
             $set = rtrim($set, ", ");
             $query = "UPDATE " . $tableName . " SET " . $set . " WHERE " . $keyWhere . " = " . $valueWhere;
+        
             $queryact = $this->connection->query($query);
-
+            
             $result = null;
             
-            if (!$queryact) {
+            if (!$this->connection->affected_rows) {
                 $result['status'] = 0;
                 $result['message'] = "Query failed: (" . $this->connection->errno . ") " . $this->connection->error;
             }else{
