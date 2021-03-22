@@ -34,7 +34,7 @@
 
     <!-- Header -->
     <?php
-    include_once("includes/header.php")
+      include_once("includes/header.php")
     ?>
 
     <!-- Page Content -->
@@ -56,24 +56,24 @@
             <div class="contact-item">
               <i class="fa fa-phone"></i>
               <h4>Phone</h4>
-              <p>Vivamus ut tellus mi. Nulla nec cursus elit, id vulputate nec cursus augue.</p>
-              <a href="#">+1 333 4040 5566</a>
+              <p><?= $include->phone_text ?></p>
+              <a target="_BLANK" href="https://wa.me/<?= $include->phone ?>"><?= $include->phone ?></a>
             </div>
           </div>
           <div class="col-md-4">
             <div class="contact-item">
               <i class="fa fa-envelope"></i>
               <h4>Email</h4>
-              <p>Vivamus ut tellus mi. Nulla nec cursus elit, id vulputate nec cursus augue.</p>
-              <a href="#">contact@company.com</a>
+              <p><?= $include->email_text ?></p>
+              <a href="mailto:<?= $include->email ?>"><?= $include->email ?></a>
             </div>
           </div>
           <div class="col-md-4">
             <div class="contact-item">
               <i class="fa fa-map-marker"></i>
               <h4>Location</h4>
-              <p>212 Barrington Court New York str <br> USA</p>
-              <a href="#">View on Google Maps</a>
+              <p><?= $include->location ?></p>
+              <a href="#maps">View on Google Maps</a>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
           </div>
           <div class="col-md-12">
             <div class="contact-form">
-              <form id="contact" action="" method="get">
+            <form id="contact" action="send.php?from=contact.php" method="post">
                 <div class="row">
                   <div class="col-lg-4 col-md-12 col-sm-12">
                     <fieldset>
@@ -115,7 +115,7 @@
                   </div>
                   <div class="col-lg-12">
                     <fieldset>
-                      <button type="submit" id="form-submit" class="filled-button">Send Message</button>
+                      <button type="submit" id="form-submit" class="border-button">Send Message</button>
                     </fieldset>
                   </div>
                 </div>
@@ -132,87 +132,16 @@
 	2. Click on your location point
 	3. Click "Share" and choose "Embed map" tab
 	4. Copy only URL and paste it within the src="" field below
--->
-     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1978.171905307209!2d110.22864795819761!3d-7.427151698660415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a84294d1ca325%3A0xf28d6f776c471b11!2sKauman%2C%20Payaman%2C%20Kec.%20Secang%2C%20Magelang%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1613132851643!5m2!1sid!2sid" width="100%" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+--> 
+      <div id="maps">
+      <?= $include->maps ?>
+      </div>
     </div>
 
     <!-- Footer Starts Here -->
-   <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 footer-item">
-            <h4>Wizh.art Creative Media</h4>
-            <p>We are a truly professional visual creative content agency. We’re talking about content’s versatility as a strategy driver, and for far more than just attracting audiences.</p>
-            <ul class="social-icons">
-              <li><a rel="nofollow" href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Useful Links</h4>
-            <ul class="menu-list">
-              <li><a href="#">Vivamus ut tellus mi</a></li>
-              <li><a href="#">Nulla nec cursus elit</a></li>
-              <li><a href="#">Vulputate sed nec</a></li>
-              <li><a href="#">Cursus augue hasellus</a></li>
-              <li><a href="#">Lacinia ac sapien</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Additional Pages</h4>
-            <ul class="menu-list">
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Terms</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item last-item">
-            <h4>Contact Us</h4>
-            <div class="contact-form">
-              <form id="contact footer-contact" action="" method="post">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="name" type="text" class="form-control" id="name" placeholder="Full Name" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="email" type="text" class="form-control" id="email" pattern="[^ @]*@[^ @]*" placeholder="E-Mail Address" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your Message" required=""></textarea>
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="filled-button">Send Message</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-    <div class="sub-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-                Copyright © 2020 Wizh.art Creative Media
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php
+    include_once("includes/footer.php")
+    ?>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>

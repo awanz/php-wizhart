@@ -33,71 +33,38 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- Header -->
-    <div class="sub-header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-xs-12">
-            <ul class="left-info">
-              <li><a href="#"><i class="fa fa-envelope"></i>wizhart6@gmail.com</a></li>
-              <li><a href="#"><i class="fa fa-phone"></i>+628976895144</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <ul class="right-icons">
-              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <header class="">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <img src="assets/images/wizh2.png" alt="" style="width:150px;height:200px>
-          <a class="navbar-brand" href="index.php"></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="index.php">Home
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="jobs.php">Service</a>
-              </li>
-              <li class="nav-item dropdown active">
-                <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-              
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="about.php">About Us</a>
-                    <a class="dropdown-item" href="team.php">Team</a>
-                    <a class="dropdown-item active" href="blog.php">Blog</a>
-                    <a class="dropdown-item" href="testimonials.php">Testimonials</a>
-                    <a class="dropdown-item" href="terms.php">Terms</a>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.php">Contact Us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <?php
+      include_once("includes/header.php")
+    ?>
+    <?php
+      $id = null;
+
+      if (!empty($_GET)) {
+        if (!empty($_GET['id'])) {
+            $id = $_GET['id'];
+        }
+      }else{
+        header("Location: blog.php");
+      }
+
+      $resultData = $db->getBy("blogs", "id", $id);
+      $blogsData = null;
+      if ($resultData->num_rows) {
+        $blogsData = $resultData->fetch_assoc();
+        $usernameTemp = $db->getBy("users", 'id', $blogsData['user_id']);
+        $username = $usernameTemp->fetch_object()->username;
+      }else{
+        header("Location: blog.php");
+      }
+    ?>
 
     <!-- Page Content -->
     <div class="page-heading header-text">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui eaque odit, temporibus quaerat asperiores velit?</h1>
-            <span><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10</span>
+            <h1><?= $blogsData['title'] ?></h1>
+            <span><i class="fa fa-user"></i> <?= $username ?> &nbsp;|&nbsp; <i class="fa fa-calendar"></i> <?= $blogsData['created_at'] ?>0</span>
           </div>
         </div>
       </div>
@@ -108,224 +75,23 @@
         <div class="more-info-content">
           <div class="right-content">
             <div>
-              <img src="assets/images/blog-image-fullscren-1-1920x700.jpg" class="img-fluid" alt="">
+              <img src="assets/images/blogs/<?= $blogsData['images'] ?>" class="img-fluid" alt="">
             </div>
             <br>
-            <p>Phasellus convallis mauris sed elementum vulputate. Donec posuere leo sed dui eleifend hendrerit. Sed suscipit suscipit erat, sed vehicula ligula. Aliquam ut sem fermentum sem tincidunt lacinia gravida aliquam nunc. Morbi quis erat imperdiet, molestie nunc ut, accumsan diam.</p>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam nihil magnam magni perferendis sit, inventore maxime architecto ab officia illum vitae veritatis asperiores laborum quaerat ratione omnis, possimus, sunt quae?</p>
-            
-            <h4>Lorem ipsum dolor sit amet.</h4>
-
-            <br>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus amet, corporis corrupti quod illum id autem assumenda nostrum quo, odio libero dolorum. Expedita, enim non voluptatibus qui veritatis iste ad? Voluptates natus dolor, minus culpa magnam! Iusto blanditiis beatae laudantium.</p>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci dolor nemo optio facere impedit fugiat obcaecati blanditiis tempora inventore sapiente beatae aspernatur vitae fuga totam possimus eveniet, praesentium maiores! Dolorum illum voluptates ipsum aspernatur explicabo numquam, aliquid a amet, deleniti eos suscipit totam laudantium excepturi voluptatum fugiat eum nesciunt minus iste, expedita provident temporibus, alias possimus veritatis aut fugit? Eaque.</p>
+            <?= $blogsData['content'] ?>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="callback-form contact-us">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="section-heading">
-              <h2>Leave a <em>comment</em></h2>
-              <span>Suspendisse a ante in neque iaculis lacinia</span>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="contact-form">
-              <form id="contact" action="" method="get">
-                <div class="row">
-                  <div class="col-lg-6 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="name" type="text" class="form-control" id="name" placeholder="Full Name" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-6 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="email" type="text" class="form-control" id="email" pattern="[^ @]*@[^ @]*" placeholder="E-Mail Address" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your Message" required=""></textarea>
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="filled-button">Submit</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <!-- Footer Starts Here -->
-   <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 footer-item">
-            <h4>Wizh.art Creative Media</h4>
-            <p>We are a truly professional visual creative content agency. We’re talking about content’s versatility as a strategy driver, and for far more than just attracting audiences.</p>
-            <ul class="social-icons">
-              <li><a rel="nofollow" href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Useful Links</h4>
-            <ul class="menu-list">
-              <li><a href="#">Vivamus ut tellus mi</a></li>
-              <li><a href="#">Nulla nec cursus elit</a></li>
-              <li><a href="#">Vulputate sed nec</a></li>
-              <li><a href="#">Cursus augue hasellus</a></li>
-              <li><a href="#">Lacinia ac sapien</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Additional Pages</h4>
-            <ul class="menu-list">
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Terms</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item last-item">
-            <h4>Contact Us</h4>
-            <div class="contact-form">
-              <form id="contact footer-contact" action="" method="post">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="name" type="text" class="form-control" id="name" placeholder="Full Name" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="email" type="text" class="form-control" id="email" pattern="[^ @]*@[^ @]*" placeholder="E-Mail Address" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your Message" required=""></textarea>
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="filled-button">Send Message</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <?php
+      include_once("includes/footer.php")
+    ?>
     
-    <div class="sub-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-                Copyright © 2020 Wizh.art Creative Media
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
     
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 70px;">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Book Now</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-              <form action="#" id="contact">
-                  <div class="row">
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Pick-up location" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Return location" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-                  </div>
-
-                  <div class="row">
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Pick-up date/time" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Return date/time" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-                  </div>
-
-                  <div class="form-group">
-                    <fieldset>
-                      <input type="text" class="form-control" placeholder="Enter full name" required="">
-                    </fieldset>
-                  </div>
-
-                  <div class="row">
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Enter email address" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-
-                   <div class="col-md-6">
-                    <div class="form-group">
-                      <fieldset>
-                        <input type="text" class="form-control" placeholder="Enter phone" required="">
-                      </fieldset>
-                    </div>
-                   </div>
-                  </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary">Book Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>

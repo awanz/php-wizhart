@@ -1,18 +1,25 @@
+<?php 
+    include_once("includes/config.php");
+    include_once("control/includes/mysqlbase.php");
+    $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass); 
+    $result = $db->getBy("settings", 'id', 1);
+    $include = $result->fetch_object();
+?>
 <!-- Header -->
 <div class="sub-header">
     <div class="container">
     <div class="row">
         <div class="col-md-8 col-xs-12">
         <ul class="left-info">
-            <li><a href="#"><i class="fa fa-envelope"></i>wizhart6@gmail.com</a></li>
-            <li><a href="#"><i class="fa fa-phone"></i>+628976895144</a></li>
+            <li><a href="#"><i class="fa fa-envelope"></i><?= $include->email ?></a></li>
+            <li><a href="#"><i class="fa fa-phone"></i><?= $include->phone ?></a></li>
         </ul>
         </div>
         <div class="col-md-4">
         <ul class="right-icons">
-            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="<?= $include->facebook ?>"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="<?= $include->instagram ?>"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="<?= $include->linkedin ?>"><i class="fa fa-linkedin"></i></a></li>
         </ul>
         </div>
     </div>
@@ -43,7 +50,7 @@
             
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="about.php">About Us</a>
-                <a class="dropdown-item" href="team.php">Teamz</a>
+                <a class="dropdown-item" href="team.php">Team</a>
                 <a class="dropdown-item" href="blog.php">Blog</a>
                 <a class="dropdown-item" href="testimonials.php">Testimonials</a>
                 <a class="dropdown-item" href="terms.php">Terms</a>

@@ -33,63 +33,9 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- Header -->
-    <div class="sub-header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-xs-12">
-            <ul class="left-info">
-              <li><a href="#"><i class="fa fa-envelope"></i>wizhart6@gmail.com</a></li>
-              <li><a href="#"><i class="fa fa-phone"></i>+628976895144</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <ul class="right-icons">
-              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <header class="">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <img src="assets/images/wizh2.png" alt="" style="width:150px;height:200px>
-          <a class="navbar-brand" href="index.php"></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="index.php">Home
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="jobs.php">Service</a>
-              </li>
-              <li class="nav-item dropdown active">
-                <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-              
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="about.php">About Us</a>
-                    <a class="dropdown-item" href="team.php">Team</a>
-                    <a class="dropdown-item active" href="blog.php">Blog</a>
-                    <a class="dropdown-item" href="testimonials.php">Testimonials</a>
-                    <a class="dropdown-item" href="terms.php">Terms</a>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.php">Contact Us</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <?php
+      include_once("includes/header.php")
+    ?>
 
     <!-- Page Content -->
     <div class="page-heading header-text">
@@ -108,70 +54,58 @@
         <div class="row">
           <div class="col-md-8">
             <section class='tabs-content'>
+              <?php
+                $recentBlogs = $db->query("select * from blogs order by id desc limit 3");
+                foreach ($recentBlogs as $rb) {
+                $usernameTemp = $db->getBy("users", 'id', $rb['user_id']);
+                $username = $usernameTemp->fetch_object()->username;
+              ?>
               <article id='tabs-1'>
-                <img src="assets/images/blog-image-1-940x460.jpg" alt="">
-                <h4><a href="blog-details.html">Lorem ipsum dolor sit amet, consectetur adipisicing.</a></h4>
+                <img src="assets/images/blogs/<?= $rb['images'] ?>" alt="">
+                <h4><a href="blog-details.html"><?= $rb['title'] ?></a></h4>
                 <div style="margin-bottom:10px;">
-                  <span>John Doe &nbsp;|&nbsp; 27.07.2020 10:10 &nbsp;|&nbsp; 15 comments</span>
+                  <span><?= $username ?> &nbsp;|&nbsp; <?= $rb['created_at'] ?></span>
                 </div>
-                <p>Sed ut dolor in augue cursus ultrices. Vivamus mauris turpis, auctor vel facilisis in, tincidunt vel diam. Sed vitae scelerisque orci. Nunc non magna orci. Aliquam commodo mauris ante, quis posuere nibh vestibulum sit amet.</p>
+                <p><?= $rb['content_preview'] ?></p>
                 <br>
                 <div>
-                  <a href="blog-details.html" class="filled-button">Continue Reading</a>
+                  <a href="blog-details.php?id=<?= $rb['id'] ?>" class="filled-button">Continue Reading</a>
                 </div>
               </article>
+              <br><br>
+              <?php } ?>
 
-              <br>
-              <br>
-              <br>
-
-              <article id='tabs-2'>
-                <img src="assets/images/blog-image-2-940x460.jpg" alt="">
-                <h4><a href="blog-details.html">Mauris lobortis quam id dictum dignissim</a></h4>
-                <div style="margin-bottom:10px;">
-                  <span>John Doe &nbsp;|&nbsp; 27.07.2020 10:10 &nbsp;|&nbsp; 15 comments</span>
-                </div>
-                <p>Sed ut dolor in augue cursus ultrices. Vivamus mauris turpis, auctor vel facilisis in, tincidunt vel diam. Sed vitae scelerisque orci. Nunc non magna orci. Aliquam commodo mauris ante, quis posuere nibh vestibulum sit amet</p>
-                <br>
-                <div>
-                  <a href="blog-details.html" class="filled-button">Continue Reading</a>
-                </div>
-              </article>
+              
             </section>
           </div>
 
           <div class="col-md-4">
-              <h4 class="h4">Search</h4>
+              <!-- <h4 class="h4">Search</h4>
               
               <form id="search_form" name="gs" method="GET" action="#">
                 <input type="text" name="q" class="form-control form-control-lg" placeholder="type to search..." autocomplete="on">
               </form>
 
               <br>
-              <br>
+              <br> -->
 
               <h4 class="h4">Recent posts</h4>
 
               <ul>
+                  <?php
+                    $recentBlogs = $db->query("select * from blogs order by id desc limit 3");
+                    foreach ($recentBlogs as $rb) {
+                    $usernameTemp = $db->getBy("users", 'id', $rb['user_id']);
+                    $username = $usernameTemp->fetch_object()->username;
+                  ?>
                   <li>
-                      <h5 style="margin-bottom:10px;"><a href="blog-details.html">Dolorum corporis ullam, reiciendis inventore est repudiandae</a></h5>
-                      <small><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10</small>
+                      <h5 style="margin-bottom:10px;"><a href="blog-details.php?id=<?= $rb['id'] ?>"><?= $rb['title'] ?></a></h5>
+                      <small><i class="fa fa-user"></i> <?= $username ?> &nbsp;|&nbsp; <i class="fa fa-calendar"></i> <?= $rb['created_at'] ?></small>
                   </li>
 
                   <li><br></li>
 
-                  <li>
-                      <h5 style="margin-bottom:10px;"><a href="blog-details.html">Culpa ab quasi in rerum dolorum impedit expedita</a></h5>
-                      <small><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10</small>
-                  </li>
-
-                  <li><br></li>
-
-                  <li>
-                    <h5 style="margin-bottom:10px;"><a href="blog-details.html">Explicabo soluta corrupti dolor doloribus optio dolorum</a></h5>
-
-                    <small><i class="fa fa-user"></i> John Doe &nbsp;|&nbsp; <i class="fa fa-calendar"></i> 27.07.2020 10:10</small>
-                  </li>
+                  <?php } ?>
               </ul>
           </div>
         </div>
@@ -184,82 +118,9 @@
     <br>  
 
     <!-- Footer Starts Here -->
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 footer-item">
-            <h4>Wizh.art Creative Media</h4>
-            <p>We are a truly professional visual creative content agency. We’re talking about content’s versatility as a strategy driver, and for far more than just attracting audiences.</p>
-            <ul class="social-icons">
-              <li><a rel="nofollow" href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Useful Links</h4>
-            <ul class="menu-list">
-              <li><a href="#">Vivamus ut tellus mi</a></li>
-              <li><a href="#">Nulla nec cursus elit</a></li>
-              <li><a href="#">Vulputate sed nec</a></li>
-              <li><a href="#">Cursus augue hasellus</a></li>
-              <li><a href="#">Lacinia ac sapien</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item">
-            <h4>Additional Pages</h4>
-            <ul class="menu-list">
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Terms</a></li>
-            </ul>
-          </div>
-          <div class="col-md-3 footer-item last-item">
-            <h4>Contact Us</h4>
-            <div class="contact-form">
-              <form id="contact footer-contact" action="" method="post">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="name" type="text" class="form-control" id="name" placeholder="Full Name" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12">
-                    <fieldset>
-                      <input name="email" type="text" class="form-control" id="email" pattern="[^ @]*@[^ @]*" placeholder="E-Mail Address" required="">
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your Message" required=""></textarea>
-                    </fieldset>
-                  </div>
-                  <div class="col-lg-12">
-                    <fieldset>
-                      <button type="submit" id="form-submit" class="filled-button">Send Message</button>
-                    </fieldset>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-    <div class="sub-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-                Copyright © 2020 Wizh.art Creative Media
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php
+      include_once("includes/footer.php")
+    ?>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
