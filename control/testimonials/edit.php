@@ -31,13 +31,13 @@
         $result = null;
 
         if($_FILES['file']['name'] == "") {
-            $result = $db->update("slideshow", $dataArray, "id", $id);
+            $result = $db->update("teams", $dataArray, "id", $id);
         }else{
             // Upload
             $error = null;
             $file_max_weight = 1900000; 
             $ok_ext = array('jpg','png','gif','jpeg'); 
-            $destination = '../../assets/images/slideshow/';
+            $destination = '../../assets/images/teams/';
             
             $file = $_FILES['file'];
             $filename = explode(".", $file["name"]); 
@@ -71,8 +71,8 @@
             // End Upload
 
             if ($error == "sukses") {
-                $dataArray['images'] = $fileNewName;
-                $result = $db->update("slideshow", $dataArray, "id", $id);
+                $dataArray['photo'] = $fileNewName;
+                $result = $db->update("teams", $dataArray, "id", $id);
             }else{
                 $result['status'] = 0;
                 $result['message'] = $error;
@@ -85,7 +85,7 @@
             header("Location: list.php?status=".$result['status']."&message=".$result['message']);
         }
     }else{
-        $resultData = $db->getBy("slideshow", "id", $id);
+        $resultData = $db->getBy("teams", "id", $id);
         $dataEdit = null;
         if ($resultData->num_rows) {
             $dataEdit = $resultData->fetch_assoc();
@@ -99,7 +99,7 @@
 <html lang="en">
   <head>
     <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Slideshow Edit</title>
+    <title>Member Edit</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,13 +114,13 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-slideshare"></i> Slideshow</h1>
+          <h1><i class="fa fa-star"></i> Teams</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Slideshow</a></li>
-          <li class="breadcrumb-item"><a href="#">Edit</a></li>
+          <li class="breadcrumb-item"><a href="#">Teams</a></li>
+          <li class="breadcrumb-item"><a href="#">Member Edit</a></li>
         </ul>
       </div>
       <div class="row">
@@ -128,26 +128,26 @@
           <form action="" method="POST" enctype="multipart/form-data">
             <div class="tile">
                 <?php 
-                if (!empty($notif)) {
+                  if (!empty($notif)) {
                     if ($status == 0) {
-                        echo '<div class="alert alert-danger" role="alert"><center>';
-                        echo $notif;
-                        echo "</center></div>";
+                      echo '<div class="alert alert-danger" role="alert"><center>';
+                      echo $notif;
+                      echo "</center></div>";
                     } 
                     if ($status == 1) {
-                        echo '<div class="alert alert-primary" role="alert"><center>';
-                        echo $notif;
-                        echo "</center></div>";
+                      echo '<div class="alert alert-primary" role="alert"><center>';
+                      echo $notif;
+                      echo "</center></div>";
                     } 
-                }
+                  }
                 ?>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="form-group">
-                            <input value="<?= $dataEdit['title'] ?>" name="title" class="form-control" type="text" placeholder="Title" required>
+                          <input value="<?= $dataEdit['name'] ?>" name="name" class="form-control" type="text" placeholder="Name" required>
                         </div>
                         <div class="form-group">
-                            <input value="<?= $dataEdit['subtitle'] ?>" name="subtitle" class="form-control" type="text" placeholder="Subtitle">
+                          <input value="<?= $dataEdit['position'] ?>" name="position" class="form-control" type="text" placeholder="Position" required>
                         </div>
                         <div class="form-group">
                             <textarea placeholder="Description" class="form-control" name="description" id="description" rows="3" required><?= $dataEdit['description'] ?></textarea>
@@ -155,17 +155,17 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <input value="<?= $dataEdit['link_button'] ?>" name="link_button" class="form-control" type="text" placeholder="Link Button" required>
+                          <input value="<?= $dataEdit['linkedin'] ?>" name="linkedin" class="form-control" type="text" placeholder="Linkedin" required>
                         </div>
                         <div class="form-group">
-                            <img src="../../assets/images/slideshow/<?= $dataEdit['images'] ?>" alt="" width="128px"><br><br>
-                            <input type="file" name="file" id="file">
+                          <img src="../../assets/images/teams/<?= $dataEdit['photo'] ?>" alt="" width="64px"><br><br>
+                          <input type="file" name="file" id="file">
                         </div>
                     </div>
                 </div>
                 <div class="tile-footer">
                     <a href="list.php" class="btn btn-danger" type="submit">Cancel</a>
-                    <button class="btn btn-primary" type="submit">Edit</button>
+                    <button class="btn btn-primary" type="submit">Save</button>
                 </div>
             </div>
           </form>

@@ -11,7 +11,7 @@
     <li><a class="app-menu__item" href="<?= base_url("dashboard.php") ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
+            <i class="app-menu__icon fa fa-slideshare"></i>
             <span class="app-menu__label">Slideshow Header</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
@@ -22,30 +22,35 @@
     </li>
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
+            <i class="app-menu__icon fa fa-tasks"></i>
             <span class="app-menu__label">Services</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
+            <li><a class="treeview-item" href="<?= base_url('services/add.php') ?>"><i class="icon fa fa-circle-o"></i> Service Add</a></li>
+            <li><a class="treeview-item" href="<?= base_url('services/list.php') ?>"><i class="icon fa fa-circle-o"></i> Service Lists</a></li>
         </ul>
     </li>
-    <li><a class="app-menu__item" href="setting/index.php"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Teamwork</span></a></li>
+    <li>
+        <a class="app-menu__item" href="<?= base_url("setting/about.php") ?>">
+            <i class="app-menu__icon fa fa-id-card"></i>
+            <span class="app-menu__label">About</span>
+        </a>
+    </li>
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
+            <i class="app-menu__icon fa fa-rss"></i>
             <span class="app-menu__label">Blog</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
+            <li><a class="treeview-item" href="<?= base_url('blogs/add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
+            <li><a class="treeview-item" href="<?= base_url('blogs/list.php') ?>"><i class="icon fa fa-circle-o"></i> Article Lists</a></li>
         </ul>
     </li>
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
+            <i class="app-menu__icon fa fa-users"></i>
             <span class="app-menu__label">Teams</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
@@ -56,49 +61,16 @@
     </li>
     <li class="treeview">
         <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
-            <span class="app-menu__label">Testimonial</span>
+            <i class="app-menu__icon fa fa-star"></i>
+            <span class="app-menu__label">Testimonials</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
+            <li><a class="treeview-item" href="<?= base_url('testimonials/add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Testimonials</a></li>
+            <li><a class="treeview-item" href="<?= base_url('testimonials/list.php') ?>"><i class="icon fa fa-circle-o"></i> List Testimonials</a></li>
         </ul>
     </li>
-    <li class="treeview">
-        <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
-            <span class="app-menu__label">About US</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
-        </a>
-        <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
-            <span class="app-menu__label">Contact US</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
-        </a>
-        <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-laptop"></i>
-            <span class="app-menu__label">Terms</span>
-            <i class="treeview-indicator fa fa-angle-right"></i>
-        </a>
-        <ul class="treeview-menu">
-            <li><a class="treeview-item" href="<?= base_url('add.php') ?>"><i class="icon fa fa-circle-o"></i> Add Article</a></li>
-            <li><a class="treeview-item" href="<?= base_url('list.php') ?>"><i class="icon fa fa-circle-o"></i> List Articles</a></li>
-        </ul>
-    </li>
-    <!-- <li><a class="app-menu__item" href="<?= base_url("setting/index.php") ?>"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Messages</span></a></li> -->
+    <li><a class="app-menu__item" href="<?= base_url("setting/terms.php") ?>"><i class="app-menu__icon fa fa-handshake-o"></i><span class="app-menu__label">Terms</span></a></li>
     <li><a class="app-menu__item" href="<?= base_url("setting/index.php") ?>"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">Setting</span></a></li>
     
   </ul>

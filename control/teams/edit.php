@@ -27,12 +27,60 @@
     $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
         $dataArray = $_POST;
+        $result = null;
 
-        $result = $db->update("teams", $dataArray, "id", $id);
+        if($_FILES['file']['name'] == "") {
+            $result = $db->update("teams", $dataArray, "id", $id);
+        }else{
+            // Upload
+            $error = null;
+            $file_max_weight = 1900000; 
+            $ok_ext = array('jpg','png','gif','jpeg'); 
+            $destination = '../../assets/images/teams/';
+            
+            $file = $_FILES['file'];
+            $filename = explode(".", $file["name"]); 
+            $file_name = $file['name']; // file original name
+            $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
+            $file_extension = $filename[count($filename)-1];
+            $file_weight = $file['size'];
+            $file_type = $file['type'];
+
+            // If there is no error
+            if( $file['error'] == 0 ){
+                // mengecek apakah extensi file sama dengaan keinginan
+                if( in_array($file_extension, $ok_ext)):
+                    // mengecek ukuran file
+                    if( $file_weight <= $file_max_weight ):
+                            // mengubah nama file, dan di encript dengan md5
+                            $fileNewName = md5( $file_name_no_ext[0].microtime() ).'.'.$file_extension ;
+                            // and move it to the destination folder
+                            if( move_uploaded_file($file['tmp_name'], $destination.$fileNewName) ):
+                            $error = "sukses";
+                            else:
+                            $error = "Upload Gagal";
+                            endif;
+                    else:
+                    $error = "File terlalu besar";
+                    endif;
+                else:
+                    $error = "Extensi file tidak didukung";
+                endif;
+            }
+            // End Upload
+
+            if ($error == "sukses") {
+                $dataArray['photo'] = $fileNewName;
+                $result = $db->update("teams", $dataArray, "id", $id);
+            }else{
+                $result['status'] = 0;
+                $result['message'] = $error;
+            }
+        }
+        
         if ($result['status'] == 0) {
-            header("Location: add.php?status=".$result['status']."&message=".$result['message']);
+            header("Location: edit.php?id=".$id."&status=".$result['status']."&message=".$result['message']);
         }else{
             header("Location: list.php?status=".$result['status']."&message=".$result['message']);
         }
@@ -51,7 +99,7 @@
 <html lang="en">
   <head>
     <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Member Add</title>
+    <title>Member Edit</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -66,7 +114,7 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Teams</h1>
+          <h1><i class="fa fa-users"></i> Teams</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>

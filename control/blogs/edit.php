@@ -1,43 +1,107 @@
 <?php 
-  session_start();
-  include_once("../includes/config.php");
-  $status = null;
-  $notif = null;
-
-  if (!empty($_GET)) {
-    if (!empty($_GET['status'])) {
-      $status = $_GET['status'];
+    session_start();    
+    if (!empty($_GET)) {
+        if (!empty($_GET['message'])) {
+            $status = $_GET['status'];
+            $notif = $_GET['message'];
+        }
     }
-    if (!empty($_GET['message'])) {
-      $notif = $_GET['message'];
-    }
-  }
 
-  if (!empty($_SESSION)) {
-    if ($_SESSION['login'] != "masuk") {
-      header("Location: ../index.php");
+    if (!empty($_SESSION)) {
+        if ($_SESSION['login'] != "masuk") {
+            header("Location: ../index.php");
+        }
+    }else{
+        header("Location: ../index.php");
     }
-  }else{
-    header("Location: ../index.php");
-  }
+    include_once("../includes/config.php");
+    $id = null;
 
-  if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (!empty($_GET)) {
+        if (!empty($_GET['id'])) {
+            $id = $_GET['id'];
+        }
+    }
+
     include_once("../includes/mysqlbase.php");
-    $dataArray = $_POST;
-    $dataArray['content_preview'] = trim(preg_replace(['/<[^>]*>/','/\s+/'],' ', $dataArray['content']));
     $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
-    $result = $db->insert("articles", $dataArray);
 
-    header("Location: ../add.php?status=".$result['status']."&message=".$result['message']);
-  }
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $dataArray = $_POST;
+        $result = null;
 
+        if($_FILES['file']['name'] == "") {
+            $dataArray['content_preview'] = trim(preg_replace(['/<[^>]*>/','/\s+/'],' ', $dataArray['content']));
+            $result = $db->update("blogs", $dataArray, "id", $id);
+        }else{
+            // Upload
+            $error = null;
+            $file_max_weight = 1900000; 
+            $ok_ext = array('jpg','png','gif','jpeg'); 
+            $destination = '../../assets/images/blogs/';
+            
+            $file = $_FILES['file'];
+            $filename = explode(".", $file["name"]); 
+            $file_name = $file['name']; // file original name
+            $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
+            $file_extension = $filename[count($filename)-1];
+            $file_weight = $file['size'];
+            $file_type = $file['type'];
+
+            // If there is no error
+            if( $file['error'] == 0 ){
+                // mengecek apakah extensi file sama dengaan keinginan
+                if( in_array($file_extension, $ok_ext)):
+                    // mengecek ukuran file
+                    if( $file_weight <= $file_max_weight ):
+                            // mengubah nama file, dan di encript dengan md5
+                            $fileNewName = md5( $file_name_no_ext[0].microtime() ).'.'.$file_extension ;
+                            // and move it to the destination folder
+                            if( move_uploaded_file($file['tmp_name'], $destination.$fileNewName) ):
+                            $error = "sukses";
+                            else:
+                            $error = "Upload Gagal";
+                            endif;
+                    else:
+                    $error = "File terlalu besar";
+                    endif;
+                else:
+                    $error = "Extensi file tidak didukung";
+                endif;
+            }
+            // End Upload
+
+            if ($error == "sukses") {
+                $dataArray['images'] = $fileNewName;
+                $dataArray['content_preview'] = trim(preg_replace(['/<[^>]*>/','/\s+/'],' ', $dataArray['content']));
+                $result = $db->update("blogs", $dataArray, "id", $id);
+            }else{
+                $result['status'] = 0;
+                $result['message'] = $error;
+            }
+        }
+        
+        if ($result['status'] == 0) {
+            header("Location: edit.php?id=".$id."&status=".$result['status']."&message=".$result['message']);
+        }else{
+            header("Location: list.php?status=".$result['status']."&message=".$result['message']);
+        }
+    }else{
+        $resultData = $db->getBy("blogs", "id", $id);
+        $dataEdit = null;
+        if ($resultData->num_rows) {
+            $dataEdit = $resultData->fetch_assoc();
+        }else{
+            header("Location: list.php?status=0&message=Data not found");
+        }
+    }    
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Article Add</title>
+    <title>Blog Edit</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,20 +116,21 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Article Add</h1>
+          <h1><i class="fa fa-rss"></i> Blogs</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Article Add</a></li>
+          <li class="breadcrumb-item"><a href="#">Blogs</a></li>
+          <li class="breadcrumb-item"><a href="#">Edit</a></li>
         </ul>
       </div>
       <div class="row">
-        <div class="col-md-12">
-          <form action="" method="POST">
+      <div class="col-md-12">
+          <form action="" method="POST" enctype="multipart/form-data">
             <div class="tile">
                 <?php 
-                  if (!empty($status)) {
+                  if (!empty($notif)) {
                     if ($status == 0) {
                       echo '<div class="alert alert-danger" role="alert"><center>';
                       echo $notif;
@@ -73,34 +138,29 @@
                     } 
                     if ($status == 1) {
                       echo '<div class="alert alert-primary" role="alert"><center>';
-                      echo "Add successful";
+                      echo $notif;
                       echo "</center></div>";
                     } 
                   }
-                  
                 ?>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="form-group">
-                            <input name="title" class="form-control" type="text" placeholder="Title">
+                            <input value="<?= $dataEdit['title'] ?>" name="title" class="form-control" type="text" placeholder="Title" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                            <textarea class="form-control" name="content" id="content" rows="3" required><?= $dataEdit['content'] ?></textarea>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <input name="tags" class="form-control" type="text" placeholder="Tags">
-                        </div>
-                        <div class="form-group">
-                            <input name="keywords" class="form-control" type="text" placeholder="Keywords">
-                        </div>
-                        <div class="form-group">
-                            <input name="link" class="form-control" onblur="this.value=removeSpaces(this.value);" type="text" placeholder="Permalink">
+                          <img src="../../assets/images/blogs/<?= $dataEdit['images'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file" id="file">
                         </div>
                     </div>
                 </div>
                 <div class="tile-footer">
+                    <a href="list.php" class="btn btn-danger" type="submit">Cancel</a>
                     <button class="btn btn-primary" type="submit">Save</button>
                 </div>
             </div>
@@ -119,11 +179,6 @@
     <script type="text/javascript" src="../assets/plugins/ckeditor/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('content');
-    </script>
-    <script language="javascript" type="text/javascript">
-      function removeSpaces(string) {
-        return string.split(' ').join('-').toLowerCase();
-      }
     </script>
   </body>
 </html>

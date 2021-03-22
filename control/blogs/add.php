@@ -28,7 +28,7 @@
     $error = null;
     $file_max_weight = 1900000; 
     $ok_ext = array('jpg','png','gif','jpeg'); 
-    $destination = '../../assets/images/teams/';
+    $destination = '../../assets/images/blogs/';
     
     $file = $_FILES['file'];
     $filename = explode(".", $file["name"]); 
@@ -61,8 +61,10 @@
     }
     // End Upload
     if ($error == "sukses") {
-      $dataArray['photo'] = $fileNewName;
-      $result = $db->insert("teams", $dataArray);
+      $dataArray['images'] = $fileNewName;
+      $dataArray['user_id'] = $_SESSION['user_id'];
+      $dataArray['content_preview'] = trim(preg_replace(['/<[^>]*>/','/\s+/'],' ', $dataArray['content']));
+      $result = $db->insert("blogs", $dataArray);
       if ($result['status'] == 0) {
         header("Location: add.php?status=".$result['status']."&message=".$result['message']);
       }else{
@@ -72,16 +74,14 @@
       header("Location: add.php?status=0&message=".$error);
     }
     
-    
   }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Member Add</title>
+    <title>Blog Add</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,13 +96,13 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-users"></i> Teams</h1>
+          <h1><i class="fa fa-rss"></i> Blogs</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Teams</a></li>
-          <li class="breadcrumb-item"><a href="#">Member Add</a></li>
+          <li class="breadcrumb-item"><a href="#">Blogs</a></li>
+          <li class="breadcrumb-item"><a href="#">Add</a></li>
         </ul>
       </div>
       <div class="row">
@@ -126,21 +126,15 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="form-group">
-                          <input name="name" class="form-control" type="text" placeholder="Name" required>
+                            <input name="title" class="form-control" type="text" placeholder="Title" required>
                         </div>
                         <div class="form-group">
-                          <input name="position" class="form-control" type="text" placeholder="Position" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Description" class="form-control" name="description" id="description" rows="3" required></textarea>
+                            <textarea class="form-control" name="content" id="content" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                          <input name="linkedin" class="form-control" type="text" placeholder="Linkedin" required>
-                        </div>
-                        <div class="form-group">
-                          <input type="file" name="file" id="file">
+                          <input type="file" name="file" id="file" required>
                         </div>
                     </div>
                 </div>
@@ -162,5 +156,8 @@
     <script src="../assets/js/plugins/pace.min.js"></script>
 
     <script type="text/javascript" src="../assets/plugins/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
   </body>
 </html>

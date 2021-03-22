@@ -9,7 +9,6 @@
         $notif = $_GET['message'];
       }
     }
-
     if (!empty($_SESSION)) {
       if ($_SESSION['login'] != "masuk") {
         header("Location: ../index.php");
@@ -17,14 +16,12 @@
     }else{
       header("Location: ../index.php");
     }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta name="description" content="Wizhart.">
-    <title>List Slideshow</title>
+    <title>Blog Lists</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,30 +36,29 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-slideshare"></i> Slideshow Lists</h1>
+          <h1><i class="fa fa-rss"></i> Blog Lists</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Slideshow</a></li>
+          <li class="breadcrumb-item"><a href="#">Blog</a></li>
           <li class="breadcrumb-item"><a href="#">Lists</a></li>
         </ul>
       </div>
       <div class="row">
       <div class="col-md-12">
-      
           <div class="tile">
             <?php 
               if (!empty($notif)) {
                   if ($status == 0) {
-                      echo '<div class="alert alert-danger" role="alert"><center>';
-                      echo $notif;
-                      echo "</center></div>";
+                    echo '<div class="alert alert-danger" role="alert"><center>';
+                    echo $notif;
+                    echo "</center></div>";
                   } 
                   if ($status == 1) {
-                      echo '<div class="alert alert-primary" role="alert"><center>';
-                      echo $notif;
-                      echo "</center></div>";
+                    echo '<div class="alert alert-primary" role="alert"><center>';
+                    echo $notif;
+                    echo "</center></div>";
                   } 
               }
             ?> 
@@ -76,37 +72,37 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Title</th>
-                      <th>Subtitle</th>
-                      <th>Deskription</th>
-                      <th>Link Button</th>
                       <th>Images</th>
+                      <th>Title</th>
+                      <th>Content Preview</th>
+                      <th>Created by</th>
+                      <th>View</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php 
-                      include '../includes/mysqlbase.php';
-                      $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass, $dbcharset);
-                      $result = $db->getAll("slideshow");
-                      $no = 1;
-                      foreach ($result as $r) {
-                    ?>
+                  <?php 
+                    include '../includes/mysqlbase.php';
+                    $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass, $dbcharset);
+                    $result = $db->getAll("blogs");
+                    $no = 1;
+                    foreach ($result as $r) {
+                  ?>
                     <tr>
                       <td><?= $no ?></td>
-                      <td><?= $r['title'] ?></td>
-                      <td><?= $r['subtitle'] ?></td>
-                      <td><?= $r['description'] ?></td>
-                      <td><?= $r['link_button'] ?></td>
                       <td>
-                        <img src="../../assets/images/slideshow/<?= $r['images'] ?>" width="100px" alt="">
+                        <img src="../../assets/images/blogs/<?= $r['images'] ?>" width="100px" alt="">
                       </td>
+                      <td><?= $r['title'] ?></td>
+                      <td><?= $r['content_preview'] ?></td>
+                      <td><?= $r['user_id'] ?></td>
+                      <td><?= $r['views'] ?></td>
                       <td> 
                         <a href="edit.php?id=<?= $r['id'] ?>">Edit</a> - 
-                        <a href="delete.php?id=<?= $r['id'] ?>" onclick="return confirm('Are you sure you want to delete this data?');">Delete</a></td>
+                        <a href="delete.php?id=<?= $r['id'] ?>" onclick="return confirm('Are you sure you want to delete this data?');">Delete</a>
+                      </td>
                     </tr>
-                    <?php $no++; } ?>
-                    
+                  <?php $no++; } ?>
                   </tbody>
                 </table>
               </div>

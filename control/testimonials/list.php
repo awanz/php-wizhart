@@ -24,7 +24,7 @@
 <html lang="en">
   <head>
     <meta name="description" content="Wizhart.">
-    <title>List Slideshow</title>
+    <title>Testimonial Lists</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,12 +39,12 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-slideshare"></i> Slideshow Lists</h1>
+          <h1><i class="fa fa-star"></i> Testimonial Lists</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Slideshow</a></li>
+          <li class="breadcrumb-item"><a href="#">Testimonial</a></li>
           <li class="breadcrumb-item"><a href="#">Lists</a></li>
         </ul>
       </div>
@@ -76,11 +76,10 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Title</th>
-                      <th>Subtitle</th>
-                      <th>Deskription</th>
-                      <th>Link Button</th>
-                      <th>Images</th>
+                      <th>Name</th>
+                      <th>Jobs</th>
+                      <th>Message</th>
+                      <th>Photo</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -88,18 +87,17 @@
                     <?php 
                       include '../includes/mysqlbase.php';
                       $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass, $dbcharset);
-                      $result = $db->getAll("slideshow");
+                      $result = $db->getAll("testimonials");
                       $no = 1;
                       foreach ($result as $r) {
                     ?>
                     <tr>
                       <td><?= $no ?></td>
-                      <td><?= $r['title'] ?></td>
-                      <td><?= $r['subtitle'] ?></td>
-                      <td><?= $r['description'] ?></td>
-                      <td><?= $r['link_button'] ?></td>
+                      <td><?= $r['name'] ?></td>
+                      <td><?= $r['jobs'] ?></td>
+                      <td><?= $r['message'] ?></td>
                       <td>
-                        <img src="../../assets/images/slideshow/<?= $r['images'] ?>" width="100px" alt="">
+                        <img src="../../assets/images/testimonials/<?= $r['photo'] ?>" alt="" width="64px">
                       </td>
                       <td> 
                         <a href="edit.php?id=<?= $r['id'] ?>">Edit</a> - 

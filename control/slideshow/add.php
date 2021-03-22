@@ -23,9 +23,55 @@
     include_once("../includes/mysqlbase.php");
     $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
     $dataArray = $_POST;
+
+    // Upload
+    $error = null;
+    $file_max_weight = 1900000; 
+    $ok_ext = array('jpg','png','gif','jpeg'); 
+    $destination = '../../assets/images/slideshow/';
     
-    $result = $db->insert("slideshow", $dataArray);
-    header("Location: list.php?status=".$result['status']."&message=".$result['message']);
+    $file = $_FILES['file'];
+    $filename = explode(".", $file["name"]); 
+    $file_name = $file['name']; // file original name
+    $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
+    $file_extension = $filename[count($filename)-1];
+    $file_weight = $file['size'];
+    $file_type = $file['type'];
+
+    // If there is no error
+    if( $file['error'] == 0 ){
+        // mengecek apakah extensi file sama dengaan keinginan
+        if( in_array($file_extension, $ok_ext)):
+            // mengecek ukuran file
+            if( $file_weight <= $file_max_weight ):
+                    // mengubah nama file, dan di encript dengan md5
+                    $fileNewName = md5( $file_name_no_ext[0].microtime() ).'.'.$file_extension ;
+                    // and move it to the destination folder
+                    if( move_uploaded_file($file['tmp_name'], $destination.$fileNewName) ):
+                      $error = "sukses";
+                    else:
+                      $error = "Upload Gagal";
+                    endif;
+            else:
+               $error = "File terlalu besar";
+            endif;
+        else:
+            $error = "Extensi file tidak didukung";
+        endif;
+    }
+    // End Upload
+    if ($error == "sukses") {
+      $dataArray['images'] = $fileNewName;
+      $result = $db->insert("slideshow", $dataArray);
+      if ($result['status'] == 0) {
+        header("Location: add.php?status=".$result['status']."&message=".$result['message']);
+      }else{
+        header("Location: list.php?status=".$result['status']."&message=".$result['message']);
+      }
+    }else{
+      header("Location: add.php?status=0&message=".$error);
+    }
+    
   }
 
 ?>
@@ -49,7 +95,7 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-dashboard"></i> Slideshow</h1>
+          <h1><i class="fa fa-slideshare"></i> Slideshow</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -60,7 +106,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <form action="" method="POST">
+          <form action="" method="POST" enctype="multipart/form-data">
             <div class="tile">
                 <?php 
                   if (!empty($notif)) {
@@ -90,7 +136,10 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <input name="link_button" class="form-control" type="text" placeholder="Link Button" required>
+                          <input name="link_button" class="form-control" type="text" placeholder="Link Button" required>
+                        </div>
+                        <div class="form-group">
+                          <input type="file" name="file" id="file" required>
                         </div>
                     </div>
                 </div>

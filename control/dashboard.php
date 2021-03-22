@@ -1,6 +1,7 @@
 <?php 
   session_start();
   include_once("includes/config.php");
+  include_once("includes/mysqlbase.php");
   if (!empty($_SESSION)) {
     if ($_SESSION['login'] != "masuk") {
       header("Location: index.php");
@@ -36,7 +37,7 @@
       <div class="app-title">
         <div>
           <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
-          <p>A free and open source Bootstrap 4 admin template</p>
+          <p>Welcome to home!</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -48,31 +49,44 @@
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
             <div class="info">
               <h4>Users</h4>
-              <p><b>5</b></p>
+              <?php 
+                $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass, $dbcharset);
+                $users = $db->query("SELECT COUNT(id) AS total FROM users;");
+              ?>
+              <p><b><?= $users->fetch_object()->total ?></b></p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
-          <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-rss fa-3x"></i>
             <div class="info">
-              <h4>Likes</h4>
-              <p><b>25</b></p>
+              <h4>Blogs</h4>
+              <?php 
+                $blogs = $db->query("SELECT COUNT(id) AS total FROM blogs;");
+              ?>
+              <p><b><?= $blogs->fetch_object()->total ?></b></p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
-          <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+          <div class="widget-small warning coloured-icon"><i class="icon fa fa-tasks fa-3x"></i>
             <div class="info">
-              <h4>Uploades</h4>
-              <p><b>10</b></p>
+              <h4>Services</h4>
+              <?php 
+                $services = $db->query("SELECT COUNT(id) AS total FROM services;");
+              ?>
+              <p><b><?= $services->fetch_object()->total ?></b></p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
             <div class="info">
-              <h4>Stars</h4>
-              <p><b>500</b></p>
+              <h4>Testimonials</h4>
+              <?php 
+                $testimonials = $db->query("SELECT COUNT(id) AS total FROM testimonials;");
+              ?>
+              <p><b><?= $testimonials->fetch_object()->total ?></b></p>
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@
     $error = null;
     $file_max_weight = 1900000; 
     $ok_ext = array('jpg','png','gif','jpeg'); 
-    $destination = '../../assets/images/teams/';
+    $destination = '../../assets/images/testimonials/';
     
     $file = $_FILES['file'];
     $filename = explode(".", $file["name"]); 
@@ -62,7 +62,7 @@
     // End Upload
     if ($error == "sukses") {
       $dataArray['photo'] = $fileNewName;
-      $result = $db->insert("teams", $dataArray);
+      $result = $db->insert("testimonials", $dataArray);
       if ($result['status'] == 0) {
         header("Location: add.php?status=".$result['status']."&message=".$result['message']);
       }else{
@@ -70,9 +70,7 @@
       }
     }else{
       header("Location: add.php?status=0&message=".$error);
-    }
-    
-    
+    }    
   }
 
 ?>
@@ -96,13 +94,13 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-users"></i> Teams</h1>
+          <h1><i class="fa fa-star"></i> Testimonials</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
           <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Teams</a></li>
-          <li class="breadcrumb-item"><a href="#">Member Add</a></li>
+          <li class="breadcrumb-item"><a href="#">Testimonials</a></li>
+          <li class="breadcrumb-item"><a href="#">Add</a></li>
         </ul>
       </div>
       <div class="row">
@@ -129,16 +127,13 @@
                           <input name="name" class="form-control" type="text" placeholder="Name" required>
                         </div>
                         <div class="form-group">
-                          <input name="position" class="form-control" type="text" placeholder="Position" required>
+                          <input name="jobs" class="form-control" type="text" placeholder="Jobs" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Description" class="form-control" name="description" id="description" rows="3" required></textarea>
+                            <textarea placeholder="Message" class="form-control" name="message" id="message" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="form-group">
-                          <input name="linkedin" class="form-control" type="text" placeholder="Linkedin" required>
-                        </div>
                         <div class="form-group">
                           <input type="file" name="file" id="file">
                         </div>

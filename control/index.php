@@ -19,10 +19,11 @@
                           "password" => md5($password)
                         );
       $resultData = $db->getByArray("users", $arrayWhere);
-            
+
       if (mysqli_num_rows($resultData) > 0) {
         $_SESSION['login'] = "masuk";
         $_SESSION['username'] = $username;
+        $_SESSION['user_id'] = $resultData->fetch_object()->id;
         header("Location: dashboard.php");
       }else{
         $notif = "<small style='color: red;'>Username atau password yang dimasukan salah!</small>";
