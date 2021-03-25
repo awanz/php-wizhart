@@ -11,16 +11,16 @@
             <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
         </ul>
         </div>
-        <div class="col-md-3 footer-item">
-        <h4>Useful Links</h4>
+        <!-- <div class="col-md-3 footer-item"> -->
+        <!-- <h4>Useful Links</h4>
         <ul class="menu-list">
             <li><a href="#">Vivamus ut tellus mi</a></li>
             <li><a href="#">Nulla nec cursus elit</a></li>
             <li><a href="#">Vulputate sed nec</a></li>
             <li><a href="#">Cursus augue hasellus</a></li>
             <li><a href="#">Lacinia ac sapien</a></li>
-        </ul>
-        </div>
+        </ul> -->
+        <!-- </div> -->
         <div class="col-md-3 footer-item">
         <h4>Additional Pages</h4>
         <ul class="menu-list">
@@ -31,7 +31,7 @@
             <li><a href="#">Terms</a></li>
         </ul>
         </div>
-        <div class="col-md-3 footer-item last-item">
+        <div class="col-md-6 footer-item last-item">
         <h4>Contact Us</h4>
         <div class="contact-form">
             <form id="contact footer-contact" action="send.php?from=index.php" method="post">
