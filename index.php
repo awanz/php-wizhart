@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -97,7 +95,7 @@
 
                 <p><?= $s['content_short'] ?></p>
 
-                <a href="job-detail.php?id=<?= $s['id'] ?>" class="filled-button">View More</a>
+                <a href="job-details.php?id=<?= $s['id'] ?>" class="filled-button">View More</a>
               </div>
             </div>
             <br>

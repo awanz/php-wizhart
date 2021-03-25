@@ -3,12 +3,6 @@
 	right: -50px;
 }
 
-@media (max-width:641px)  {
-	.mobilelogo{
-		position: relative;
-		right: -120px;
-	}
-}
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;

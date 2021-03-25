@@ -4,33 +4,14 @@
   $status = null;
   $notif = null;
 
-  if (!empty($_GET)) {
-    if (!empty($_GET['message'])) {
-      $status = $_GET['status'];
-      $notif = $_GET['message'];
-    }
-  }
-
-  if (!empty($_SESSION)) {
-    if ($_SESSION['login'] != "masuk") {
-      header("Location: ../index.php");
-    }
-  }else{
-    header("Location: ../index.php");
-  }
-
-  if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    include_once("../includes/mysqlbase.php");
-    $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
-    $dataArray = $_POST;
-
-    // Upload
+  function uploadFile($filez)
+  {
+    // Upload 1
     $error = null;
     $file_max_weight = 1900000; 
     $ok_ext = array('jpg','png','gif','jpeg'); 
     $destination = '../../assets/images/services/';
-    
-    $file = $_FILES['file'];
+    $file = $filez;
     $filename = explode(".", $file["name"]); 
     $file_name = $file['name']; // file original name
     $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
@@ -59,18 +40,74 @@
             $error = "Extensi file tidak didukung";
         endif;
     }
-    // End Upload
-    if ($error == "sukses") {
-      $dataArray['images'] = $fileNewName;
-      $result = $db->insert("services", $dataArray);
-      if ($result['status'] == 0) {
-        header("Location: add.php?status=".$result['status']."&message=".$result['message']);
-      }else{
-        header("Location: list.php?status=".$result['status']."&message=".$result['message']);
-      }
-    }else{
-      header("Location: add.php?status=0&message=".$error);
+    // End Upload 1
+    $result = [
+      "error" => $error,
+      "filename" => $fileNewName
+    ];
+    return $result;
+  }
+
+  if (!empty($_GET)) {
+    if (!empty($_GET['message'])) {
+      $status = $_GET['status'];
+      $notif = $_GET['message'];
     }
+  }
+
+  if (!empty($_SESSION)) {
+    if ($_SESSION['login'] != "masuk") {
+      header("Location: ../index.php");
+    }
+  }else{
+    header("Location: ../index.php");
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    include_once("../includes/mysqlbase.php");
+    $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
+    $dataArray = $_POST;
+    
+
+    $jumlahFile = 0;
+    if (!empty($_FILES['file']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file']);
+      $jumlahFile++;
+    }
+    if (!empty($_FILES['file2']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file2']);
+      $jumlahFile++;
+    }
+    if (!empty($_FILES['file3']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file3']);
+      $jumlahFile++;
+    }
+    if (!empty($_FILES['file4']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file4']);
+      $jumlahFile++;
+    }   
+    
+    $hitungImages = 1;
+    foreach ($stat as $key => $value) {
+      if ($value['error'] != 'sukses') {
+        header("Location: add.php?status=0&message=".$value['error']);
+      }else{
+        if ($hitungImages == 1) {
+          $dataArray['images'] = $value['filename'];
+        }else{
+          $dataArray['images'.$hitungImages] = $value['filename'];
+        }
+        $hitungImages++;
+      }
+    }
+
+    $result = $db->insert("services", $dataArray);
+    if ($result['status'] == 0) {
+      header("Location: add.php?status=".$result['status']."&message=".$result['message']);
+    }else{
+      header("Location: list.php?status=".$result['status']."&message=".$result['message']);
+    }
+
     
   }
 ?>
@@ -132,11 +169,21 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
+                          <textarea placeholder="Content Short" class="form-control" name="content_short" id="content_short" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
                           <input type="file" name="file" id="file" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Content Short" class="form-control" name="content_short" id="content_short" rows="3" required></textarea>
+                          <input type="file" name="file2" id="file2">
                         </div>
+                        <div class="form-group">
+                          <input type="file" name="file3" id="file3">
+                        </div>
+                        <div class="form-group">
+                          <input type="file" name="file4" id="file4">
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="tile-footer">

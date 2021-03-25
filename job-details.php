@@ -71,7 +71,37 @@
 
     <div class="services">
       <div class="container">
-        <img style="text-align: center; height: 400px;display: block;margin-left: auto;margin-right: auto;" src="assets/images/services/<?= $servicesData['images'] ?>" alt=""><br>
+
+        <!-- Banner Starts Here -->
+        <div class="main-banner header-text" id="top">
+            <div class="Modern-Slider">
+              <!-- Item -->
+              <?php if(!empty($servicesData['images'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
+              <?php if(!empty($servicesData['images2'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images2'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
+              <?php if(!empty($servicesData['images3'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images3'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
+              <?php if(!empty($servicesData['images4'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images4'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
+            </div>
+        </div>
+        <!-- Banner Ends Here -->
+
+
+        <br>
         <?= $servicesData['content'] ?>
         <br>
         <br>

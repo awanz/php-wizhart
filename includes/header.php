@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<header class="">
+<header>
     <nav class="navbar navbar-expand-lg">
     <div class="container">
         <div class="mobilelogo">

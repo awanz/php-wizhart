@@ -36,7 +36,7 @@
     <main class="app-content">
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-tasks"></i> Customer Lists</h1>
+          <h1><i class="fa fa-user"></i> Customer Lists</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -62,10 +62,6 @@
                   } 
               }
             ?> 
-            <div>
-              <a href="add.php"><button class="btn btn-primary" type="submit">Add data</button></a>
-              <br><br>
-            </div>         
             <div class="tile-body">
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="sampleTable">

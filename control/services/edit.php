@@ -23,6 +23,50 @@
         }
     }
 
+    function uploadFile($filez)
+    {
+        // Upload 1
+        $error = null;
+        $file_max_weight = 1900000; 
+        $ok_ext = array('jpg','png','gif','jpeg'); 
+        $destination = '../../assets/images/services/';
+        $file = $filez;
+        $filename = explode(".", $file["name"]); 
+        $file_name = $file['name']; // file original name
+        $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
+        $file_extension = $filename[count($filename)-1];
+        $file_weight = $file['size'];
+        $file_type = $file['type'];
+
+        // If there is no error
+        if( $file['error'] == 0 ){
+            // mengecek apakah extensi file sama dengaan keinginan
+            if( in_array($file_extension, $ok_ext)):
+                // mengecek ukuran file
+                if( $file_weight <= $file_max_weight ):
+                        // mengubah nama file, dan di encript dengan md5
+                        $fileNewName = md5( $file_name_no_ext[0].microtime() ).'.'.$file_extension ;
+                        // and move it to the destination folder
+                        if( move_uploaded_file($file['tmp_name'], $destination.$fileNewName) ):
+                        $error = "sukses";
+                        else:
+                        $error = "Upload Gagal";
+                        endif;
+                else:
+                $error = "File terlalu besar";
+                endif;
+            else:
+                $error = "Extensi file tidak didukung";
+            endif;
+        }
+        // End Upload 1
+        $result = [
+        "error" => $error,
+        "filename" => $fileNewName
+        ];
+        return $result;
+    }
+
     include_once("../includes/mysqlbase.php");
     $db = new MySQLBase($dbhost, $dbname, $dbuser, $dbpass);
 
@@ -30,54 +74,37 @@
         $dataArray = $_POST;
         $result = null;
 
-        if($_FILES['file']['name'] == "") {
-            $result = $db->update("services", $dataArray, "id", $id);
-        }else{
-            // Upload
-            $error = null;
-            $file_max_weight = 1900000; 
-            $ok_ext = array('jpg','png','gif','jpeg'); 
-            $destination = '../../assets/images/services/';
-            
-            $file = $_FILES['file'];
-            $filename = explode(".", $file["name"]); 
-            $file_name = $file['name']; // file original name
-            $file_name_no_ext = isset($filename[0]) ? $filename[0] : null; // File name without the extension
-            $file_extension = $filename[count($filename)-1];
-            $file_weight = $file['size'];
-            $file_type = $file['type'];
-
-            // If there is no error
-            if( $file['error'] == 0 ){
-                // mengecek apakah extensi file sama dengaan keinginan
-                if( in_array($file_extension, $ok_ext)):
-                    // mengecek ukuran file
-                    if( $file_weight <= $file_max_weight ):
-                            // mengubah nama file, dan di encript dengan md5
-                            $fileNewName = md5( $file_name_no_ext[0].microtime() ).'.'.$file_extension ;
-                            // and move it to the destination folder
-                            if( move_uploaded_file($file['tmp_name'], $destination.$fileNewName) ):
-                            $error = "sukses";
-                            else:
-                            $error = "Upload Gagal";
-                            endif;
-                    else:
-                    $error = "File terlalu besar";
-                    endif;
-                else:
-                    $error = "Extensi file tidak didukung";
-                endif;
-            }
-            // End Upload
-
-            if ($error == "sukses") {
-                $dataArray['images'] = $fileNewName;
-                $result = $db->update("services", $dataArray, "id", $id);
+        $jumlahFile = 0;
+        if (!empty($_FILES['file']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file']);
+            $stat[$jumlahFile]['name_urut'] = "images";
+            $jumlahFile++;
+        }
+        if (!empty($_FILES['file2']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file2']);
+            $stat[$jumlahFile]['name_urut'] = "images2";
+            $jumlahFile++;
+        }
+        if (!empty($_FILES['file3']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file3']);
+            $stat[$jumlahFile]['name_urut'] = "images3";
+            $jumlahFile++;
+        }
+        if (!empty($_FILES['file4']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file4']);
+            $stat[$jumlahFile]['name_urut'] = "images4";
+            $jumlahFile++;
+        }
+        
+        foreach ($stat as $key => $value) {
+            if ($value['error'] != 'sukses') {
+                header("Location: edit.php?status=0&message=".$value['error']);
             }else{
-                $result['status'] = 0;
-                $result['message'] = $error;
+                $dataArray[$value['name_urut']] = $value['filename'];
             }
         }
+
+        $result = $db->update("services", $dataArray, "id", $id);
         
         if ($result['status'] == 0) {
             header("Location: edit.php?id=".$id."&status=".$result['status']."&message=".$result['message']);
@@ -152,12 +179,25 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
+                            <textarea placeholder="Content Short" class="form-control" name="content_short" id="content_short" rows="3" required><?= $dataEdit['content_short'] ?></textarea>
+                        </div>
+                        <div class="form-group">
                           <img src="../../assets/images/services/<?= $dataEdit['images'] ?>" alt="" width="250px"><br><br>
                           <input type="file" name="file" id="file">
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Content Short" class="form-control" name="content_short" id="content_short" rows="3" required><?= $dataEdit['content_short'] ?></textarea>
+                          <img src="../../assets/images/services/<?= $dataEdit['images2'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file2" id="file">
                         </div>
+                        <div class="form-group">
+                          <img src="../../assets/images/services/<?= $dataEdit['images3'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file3" id="file">
+                        </div>
+                        <div class="form-group">
+                          <img src="../../assets/images/services/<?= $dataEdit['images4'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file4" id="file">
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="tile-footer">
