@@ -85,7 +85,15 @@
     if (!empty($_FILES['file4']['name'])) {
       $stat[$jumlahFile] = uploadFile($_FILES['file4']);
       $jumlahFile++;
-    }   
+    }
+    if (!empty($_FILES['file5']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file5']);
+      $jumlahFile++;
+    }
+    if (!empty($_FILES['file6']['name'])) {
+      $stat[$jumlahFile] = uploadFile($_FILES['file6']);
+      $jumlahFile++;
+    }
     
     $hitungImages = 1;
     foreach ($stat as $key => $value) {
@@ -182,6 +190,12 @@
                         </div>
                         <div class="form-group">
                           <input type="file" name="file4" id="file4">
+                        </div>
+                        <div class="form-group">
+                          <input type="file" name="file5" id="file5">
+                        </div>
+                        <div class="form-group">
+                          <input type="file" name="file6" id="file6">
                         </div>
                         
                     </div>

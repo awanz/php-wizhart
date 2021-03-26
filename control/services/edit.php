@@ -95,6 +95,16 @@
             $stat[$jumlahFile]['name_urut'] = "images4";
             $jumlahFile++;
         }
+        if (!empty($_FILES['file5']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file5']);
+            $stat[$jumlahFile]['name_urut'] = "images5";
+            $jumlahFile++;
+        }
+        if (!empty($_FILES['file6']['name'])) {
+            $stat[$jumlahFile] = uploadFile($_FILES['file6']);
+            $stat[$jumlahFile]['name_urut'] = "images6";
+            $jumlahFile++;
+        }
         
         foreach ($stat as $key => $value) {
             if ($value['error'] != 'sukses') {
@@ -196,6 +206,14 @@
                         <div class="form-group">
                           <img src="../../assets/images/services/<?= $dataEdit['images4'] ?>" alt="" width="250px"><br><br>
                           <input type="file" name="file4" id="file">
+                        </div>
+                        <div class="form-group">
+                          <img src="../../assets/images/services/<?= $dataEdit['images5'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file5" id="file">
+                        </div>
+                        <div class="form-group">
+                          <img src="../../assets/images/services/<?= $dataEdit['images6'] ?>" alt="" width="250px"><br><br>
+                          <input type="file" name="file6" id="file">
                         </div>
                         
                     </div>

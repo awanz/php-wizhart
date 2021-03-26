@@ -96,6 +96,16 @@
                 <div class="img-fill"></div>
               </div>
               <?php } ?>
+              <?php if(!empty($servicesData['images5'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images5'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
+              <?php if(!empty($servicesData['images6'])){ ?>
+              <div class="item" style="background-image: url('assets/images/services/<?= $servicesData['images6'] ?>');">
+                <div class="img-fill"></div>
+              </div>
+              <?php } ?>
             </div>
         </div>
         <!-- Banner Ends Here -->
